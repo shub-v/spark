@@ -1,0 +1,15 @@
+version: '3'
+services:
+  spark-pipeline:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./data:/app/data        # Mount the data directory for access inside the container
+      - ./output:/app/output    # Mount the output directory for results
+      - ./src:/app/src          # Mount the source code directory
+    environment:
+      - SPARK_LOCAL_IP=127.0.0.1
+      - SPARK_CLASSPATH=/app/sqlite-jdbc.jar   # Include JDBC driver in the classpath
+    entrypoint: ["python", "src/pipeline.py"]  # Optional, but redefined for clarity
+#    entrypoint: ["tail", "-f", "/dev/null"]
